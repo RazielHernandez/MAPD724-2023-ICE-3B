@@ -1,45 +1,53 @@
-//
-//  GameViewController.swift
-//  MAPD724-W2023-ICE-2B
-//
-//  Created by Raziel Hernandez on 2023-01-25.
-//
-
 import UIKit
 import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
 
-    override func viewDidLoad() {
+
+    @IBOutlet weak var LivesLabel: UILabel!
+    @IBOutlet weak var ScoreLabel: UILabel!
+    
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
-        
-        if let view = self.view as! SKView? {
-            // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
-                
-                // Present the scene
-                view.presentScene(scene)
+        if let scene = GKScene(fileNamed: "GameScene")
+        {
+            if let sceneNode = scene.rootNode as! GameScene?
+            {
+                sceneNode.scaleMode = .aspectFill
+                if let view = self.view as! SKView?
+                {
+                    view.presentScene(sceneNode)
+                    view.ignoresSiblingOrder = true
+                }
             }
-            
-            view.ignoresSiblingOrder = true
-            
-            view.showsFPS = true
-            view.showsNodeCount = true
         }
+        
+        // Initialize the Lives and Score
+        CollisionManager.gameViewController = self
+        ScoreManager.Score = 0
+        ScoreManager.Lives = 5
+        updateLivesLabel()
+        updateScoreLabel()
     }
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
-        } else {
-            return .all
-        }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask
+    {
+        return .portrait
     }
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    func updateLivesLabel()
+    {
+        LivesLabel.text = "Lives: \(ScoreManager.Lives)"
+    }
+    
+    func updateScoreLabel()
+    {
+        ScoreLabel.text = "Score: \(ScoreManager.Score)"
     }
 }

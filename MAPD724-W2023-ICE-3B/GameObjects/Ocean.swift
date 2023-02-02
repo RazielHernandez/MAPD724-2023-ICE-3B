@@ -4,7 +4,7 @@ import SpriteKit
 class Ocean: GameObject{
     
     init(){
-        super.init(imageSrting: "ocean", initialScale: 2.0)
+        super.init(imageString: "ocean", initialScale: 2.0)
         Start()
     }
     

@@ -4,7 +4,7 @@ import SpriteKit
 class Cloud : GameObject{
     
     init(){
-        super.init(imageSrting: "cloud", initialScale: 1.0)
+        super.init(imageString: "cloud", initialScale: 1.0)
         Start()
     }
     

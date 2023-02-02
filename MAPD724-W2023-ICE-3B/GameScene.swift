@@ -4,7 +4,7 @@ import AVFoundation
 
 let screenSize = UIScreen.main.bounds
 var screenWidth: CGFloat?
-var screenHight: CGFloat?
+var screenHeight: CGFloat?
 
 class GameScene: SKScene
 {
@@ -18,50 +18,60 @@ class GameScene: SKScene
     
     override func sceneDidLoad()
     {
-        screenWidth = screenSize.width
-        screenHight = screenSize.height
-        print("Screen bounds: width\(String(describing: screenWidth)) & height\(String(describing: screenHight))")
+        screenWidth = frame.width
+        screenHeight = frame.height
+        print("Screen Width: \(String(describing: screenWidth))")
+        print("Screen Height: \(String(describing: screenHeight))")
+        
         name = "GAME"
         
-        //first ocean
+        // add the first ocean to the Scene
         ocean1 = Ocean()
         ocean1?.Reset()
         addChild(ocean1!)
-        //second ocean
+        
+        // add the second ocean to the scene
         ocean2 = Ocean()
         ocean2?.position.y = -627
         addChild(ocean2!)
         
+        // add the player to the Scene
         player = Player()
-        //player?.Reset()
         addChild(player!)
         
+        // add the island to the Scene
         island = Islands()
         addChild(island!)
         
-        //cloud = Cloud()
-        //addChild(cloud!)
-        
-        for _ in 0...2{
+        // add 3 clouds to the Scene
+        for _ in 0...2
+        {
             let cloud = Cloud()
             clouds.append(cloud)
             addChild(cloud)
         }
         
+        // Engine Sound - Background noise / music
         let engineSound = SKAudioNode(fileNamed: "engine.mp3")
         addChild(engineSound)
         engineSound.autoplayLooped = true
+        engineSound.run(SKAction.changeVolume(to: 0.5, duration: 0))
         
         
-        do{
+        // preload / prewarm impulse sounds
+        do
+        {
             let sounds: [String] = ["thunder", "yay"]
-            for sound in sounds{
+            for sound in sounds
+            {
                 let path: String = Bundle.main.path(forResource: sound, ofType: "mp3")!
-                let url: URL = URL(fileURLWithPath: path)
+                let url:URL = URL(fileURLWithPath: path)
                 let avPlayer: AVAudioPlayer = try AVAudioPlayer(contentsOf: url)
                 avPlayer.prepareToPlay()
             }
-        }catch{
+        }
+        catch
+        {
             
         }
     }
@@ -103,19 +113,17 @@ class GameScene: SKScene
     override func update(_ currentTime: TimeInterval)
     {
         
-        
-        
         ocean1?.Update()
         ocean2?.Update()
         player?.Update()
         island?.Update()
         //cloud?.Update()
         
-        CollisionManager.SquareRadiusCheck(scene: self, object1: player!, object2: island!)
-        
+        CollisionManager.SquaredRadiusCheck(scene: self, object1: player!, object2: island!)
         for cloud in clouds{
             cloud.Update()
-            CollisionManager.SquareRadiusCheck(scene: self, object1: player!, object2: cloud)
+            
+            CollisionManager.SquaredRadiusCheck(scene: self, object1: player!, object2: cloud)
         }
         
         

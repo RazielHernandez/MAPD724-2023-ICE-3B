@@ -5,7 +5,7 @@ class Islands : GameObject{
     
     
     init(){
-        super.init(imageSrting: "island", initialScale: 2.0)
+        super.init(imageString: "island", initialScale: 2.0)
         Start()
     }
     

@@ -4,7 +4,7 @@ import SpriteKit
 class Player : GameObject{
     
     init(){
-        super.init(imageSrting: "plane", initialScale: 2.0)
+        super.init(imageString: "plane", initialScale: 2.0)
         Start()
     }
     
